@@ -1,43 +1,36 @@
 <template>
-    <el-tabs :value="showIndex" type="card" closable @tab-remove="removeTab">
+    <el-tabs :value="showIndex" type="card" @tab-remove="removeTab" @tab-click="toPath">
       <el-tab-pane
         v-for="(item, index) in editableTabs"
         :key="item.path"
         :label="item.meta.title"
         :name="item.path"
+        :closable="![homePage.path, $route.path].includes(item.path)"
       > 
+      <p></p>
         <component :is="item.path.replace('/', '').replace(/\//g, '-')"></component>
       </el-tab-pane>
     </el-tabs>
 </template>
 <script>
 
-import { cachePage } from '@/libs/cachePage'
+import { cachePage, removeCachePage } from '@/libs/cachePage'
+import config from '@/config';
 
 export default {
   data() {
     return {
+      homePage: config.homePage,
       editableTabs: cachePage,
       tabIndex: 0
     };
   },
   methods: {
-    removeTab(targetName) {
-      // let tabs = this.editableTabs;
-      // let activeName = this.showIndex;
-      // if (activeName === targetName) {
-      //   tabs.forEach((tab, index) => {
-      //     if (tab.name === targetName) {
-      //       let nextTab = tabs[index + 1] || tabs[index - 1];
-      //       if (nextTab) {
-      //         activeName = nextTab.name;
-      //       }
-      //     }
-      //   });
-      // }
-
-      // // this.showIndex = activeName;
-      // this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+    removeTab(path) {
+      removeCachePage([path])
+    },
+    toPath(path) {
+      this.$router.push(path.paneName)
     }
   },
   computed: {

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { test } from '@/http';
 
 export default {
   name: 'c-header',
@@ -20,6 +21,9 @@ export default {
   computed: {
 
   },
+  created() {
+
+  }
 
   
 }

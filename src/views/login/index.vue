@@ -9,15 +9,18 @@
           <el-input v-model="userForm.username" prefix-icon="el-icon-user-solid"></el-input>
         </el-form-item>
         <el-form-item label="密码:" prop="password">
-          <el-input v-model="userForm.password" prefix-icon="el-icon-unlock"></el-input>
+          <el-input v-model="userForm.password" prefix-icon="el-icon-unlock" type="password"></el-input>
         </el-form-item>
-          <el-button type="primary" class="submitBtn" @click="loginEvent">登陆</el-button>
+          <el-button type="primary" class="submitBtn" @click="realLogin">登陆</el-button>
       </el-form>
+      <el-button type="primary" class="submitBtn" @click="loginEvent">主页</el-button>
     </el-card>
   </div>
 </template>
 
 <script>
+import config from '@/config';
+import { toLogin } from '@/http';
 
 export default {
   name: 'login',
@@ -40,27 +43,39 @@ export default {
   },
   
   methods: {
+    realLogin() {
+      toLogin(this.userForm).then(res => {
+        if(res.success) {
+          localStorage.setItem('token', res.data.token);
+          location.href = config.homePage.path;
+        }
+      })
+    },
+
     loginEvent() {
       this.$refs.userForm.validate((valid) => {
           if (valid) {
             this.$message.success('登陆成功')
-            location.href = '/wecome';
-            // this.$router.push({
-            //   path: '/wecome',
-            //   name: 'wecome',
-            //   query: {
-            //     'b': 'c'
-            //   },
-            //   params: {
-            //     q: 123
-            //   },
-            //   meta: {
-            //     w: 10
-            //   }
-            // })
+            // location.href = config.homePage.path;
+            this.$router.push({
+              path: config.homePage.path,
+              name: config.homePage.name,
+              query: {
+                'b': 'c'
+              },
+              params: {
+                q: 123
+              },
+              meta: {
+                w: 10
+              }
+            })
           }
         });
     }
+  },
+  created() {
+    
   }
 }
 </script>

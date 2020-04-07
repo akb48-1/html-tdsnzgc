@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     outLogin() {
-      // console.log(clearCachePage)
       this.$confirm('确定注销?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -39,10 +38,6 @@ export default {
           });
           
           location.href = '/login';
-
-          // this.$router.push({
-          //   path: '/login'
-          // })
 
           // clearCachePage();
         })

@@ -10,40 +10,48 @@
      text-color="#fff"
      active-text-color="#ffd04b"
       >
-      <el-menu-item index="/wecome">
-        <i class="el-icon-menu"></i>
-        <span slot="title">欢迎</span>
-      </el-menu-item>
-      <el-submenu index="/a">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span slot="title">导航一</span>
-        </template>
-          <el-menu-item index="/page1">选项1</el-menu-item>
-          <el-menu-item index="/page2">选项2</el-menu-item>
-          <el-menu-item index="/page3">选项3</el-menu-item>
-      </el-submenu>
+      <div v-for="(menu) in menuList" :key="menu.route_url">
+        <div v-if="menu.children">
+          <el-submenu :index="menu.route_url || ''" >
+            <template slot="title">
+              <i :class="menu.icon"></i>
+              <span slot="title">{{menu.title}}</span>
+            </template>
+              <el-menu-item :index="child.route_url || ''" v-for="(child) in menu.children" :key="child.route_url">{{child.title}}</el-menu-item>
+          </el-submenu>
+        </div>
+        <div v-else>
+          <el-menu-item :index="menu.route_url || ''" >
+            <i :class="menu.icon"></i>
+            <span slot="title">{{menu.title}}</span>
+          </el-menu-item>
+        </div>
+      </div>
 
-      <el-menu-item index="/page4">
-        <i class="el-icon-menu"></i>
-        <span slot="title">导航二</span>
-      </el-menu-item>
-      <el-menu-item index="/page5">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
   export default {
     name: 'c-menu',
     data() {
       return {
         isCollapse: false
       };
+    },
+
+    methods: {
+    },
+    computed: {
+      ...mapGetters(['menuList'])
+    },
+    created() {
     }
+    
   }
 </script>
 
