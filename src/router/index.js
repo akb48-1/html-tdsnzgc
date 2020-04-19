@@ -25,7 +25,9 @@ const router = new VueRouter({
 router.beforeEach((to, form, next) => {
 
   // 刷新頁面重新獲取菜單
-  if (to.meta.title == null) {
+  if (to.meta.title == null && to.path !== '/login') {
+    console.log(to)
+    console.log(111)
     getMyMenu();
   }
 

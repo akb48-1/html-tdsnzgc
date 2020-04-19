@@ -8,6 +8,8 @@ import lazyLoading from '@/libs/lazyLoading.js';
 
 import store from '@/store'
 
+import { getLocalStorage } from '@/libs/localStorage'
+
 
 export function getRoutes(routersData) {
     var routes = [];
@@ -56,6 +58,10 @@ export function generateComponent(routersData) {
 // 获取授权菜单
 export function getMyMenu() {
     console.log(store)
+    if (!getLocalStorage("token")) {
+        window.location.replace('/login');
+        return;
+    }
 
     setTimeout(() => {
         if (store.state.menuList.length > 0) {
@@ -71,16 +77,21 @@ export function getMyMenu() {
 
         } else {
             queryMyPermissionRouter().then(res => {
-                // 注册页面组件
-                generateComponent([...res.data])
+                if (res.success) {
+                    
+                    // 注册页面组件
+                    generateComponent([...res.data])
 
-                // 生成路由
-                var resultRoutes = getRoutes([...res.data])
-                home.children = [...home.children, ...resultRoutes]
-                router.addRoutes([home, err404])
+                    // 生成路由
+                    var resultRoutes = getRoutes([...res.data])
+                    home.children = [...home.children, ...resultRoutes]
+                    router.addRoutes([home, err404])
 
-                // 存儲菜單
-                store.commit('setMenuList', res.data)
+                    // 存儲菜單
+                    store.commit('setMenuList', res.data)
+                }
+                
+
             })
         }
 

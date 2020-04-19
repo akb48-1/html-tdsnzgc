@@ -10,6 +10,12 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {size: 'small'});
 import { getMyMenu } from '@/libs/generateRoutes'
 
+Vue.component('page', () => import('@/components/page.vue'))
+Vue.component('auto-flex', () => import('@/components/auto-flex.vue'))
+Vue.component('new-dialog', () => import('@/components/new-dialog.vue'))
+Vue.component('new-pagination', () => import('@/components/new-pagination.vue'))
+
+
 new Vue({
   router,
   store,

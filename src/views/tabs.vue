@@ -1,5 +1,5 @@
 <template>
-    <el-tabs :value="showIndex" type="card" @tab-remove="removeTab" @tab-click="toPath">
+    <el-tabs :value="showIndex" type="card" @tab-remove="removeTab" @tab-click="toPath" style="height: 100%;overflow-y: auto;">
       <el-tab-pane
         v-for="(item, index) in editableTabs"
         :key="item.path"

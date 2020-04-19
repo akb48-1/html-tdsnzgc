@@ -30,7 +30,6 @@ instance.interceptors.request.use(config => {
 
 
 // 添加响应拦截器
-
 instance.interceptors.response.use(response => {
   // 对响应数据做些事
   if (response.status === 200) {
@@ -38,14 +37,15 @@ instance.interceptors.response.use(response => {
     if (data.success === false) {
       message.error(data.message)
       if(data.code === 403 || data.code === 500) {
-        localStorage.setItem('token', '');
-        localStorage.setItem('userInfo', '');
-
-        window.location.replace('/login');
+        localStorage.clear();
+        setTimeout(() => {
+          window.location.replace('/login');
+        }, 500);
+        return Promise.reject();
       }
     }
   }
-  return response.data;
+  return Promise.resolve(response.data);
 }, error => {
   return Promise.reject({error: '错误'}); // 返回接口返回的错误信息
 })

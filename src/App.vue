@@ -4,7 +4,9 @@
   </div>
 </template>
 
+
 <style lang="scss">
+@import url('./global.css');
 html, body, #app {
   padding: 0;
   margin: 0;

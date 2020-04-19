@@ -14,7 +14,7 @@ export default new Vuex.Store({
   mutations: {
     setMenuList(state, payload) {
       state.menuList = payload;
-      setLocalStorage(MENULISTKEY, payload)
+      setLocalStorage(MENULISTKEY, JSON.stringify(payload))
     }
   },
   actions: {

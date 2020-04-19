@@ -37,9 +37,11 @@ export default {
             message: '已注销!'
           });
           
+          this.$store.commit('setMenuList', [])
+          localStorage.clear();
           location.href = '/login';
-
           // clearCachePage();
+          
         })
     }
   }

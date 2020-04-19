@@ -37,6 +37,7 @@ export default {
       width: 100%;
       padding: 12px;
       box-sizing: border-box;
+      overflow: auto;
     }
   }
 </style>>
