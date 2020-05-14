@@ -19,7 +19,6 @@
         </el-form-item>
         <el-button type="primary" class="submitBtn" @click="login">登陆</el-button>
       </el-form>
-      <el-button type="primary" class="submitBtn" @click="loginEvent">主页</el-button>
     </el-card>
   </div>
 </template>
@@ -33,6 +32,8 @@ import {
   MENULISTKEY,
   removeLocalStorage
 } from "@/libs/localStorage";
+import { confirmTips, validate } from "@/decorator";
+
 
 export default {
   name: "login",
@@ -53,43 +54,19 @@ export default {
   },
 
   methods: {
-    login() {
-      this.$refs.userForm.validate(valid => {
-        if (valid) {
-          toLogin(this.userForm).then(res => {
-            if (res.success) {
-              setLocalStorage("token", res.data.token);
-              removeLocalStorage(MENULISTKEY);
 
-              location.href = config.homePage.path;
-            }
-          });
-        }
-      })
+    @validate('userForm')
+    login(...args) {
+      toLogin(this.userForm).then(res => {
+        if (res.success) {
+          setLocalStorage("token", res.data.token);
+          removeLocalStorage(MENULISTKEY);
 
-    },
-
-    loginEvent() {
-      this.$refs.userForm.validate(valid => {
-        if (valid) {
-          this.$message.success("登陆成功");
-          // location.href = config.homePage.path;
-          this.$router.push({
-            path: config.homePage.path,
-            name: config.homePage.name,
-            query: {
-              b: "c"
-            },
-            params: {
-              q: 123
-            },
-            meta: {
-              w: 10
-            }
-          });
+          location.href = config.homePage.path;
         }
       });
-    }
+    },
+
   },
   created() {}
 };

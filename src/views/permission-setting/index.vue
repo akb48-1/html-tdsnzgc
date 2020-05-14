@@ -2,7 +2,7 @@
     <page id="permission-setting">
         <el-form :inline="true" :model="searchForm" >
             <el-form-item label="权限ID" >
-                <el-input v-model.number="searchForm.permission_id" placeholder="权限ID" class="w140"></el-input>
+                <el-input v-model="searchForm.permission_id" placeholder="权限ID" class="w140"></el-input>
             </el-form-item>
             <el-form-item label="权限名称" >
                 <el-input v-model="searchForm.permission_name" placeholder="权限名称" class="w140"></el-input>

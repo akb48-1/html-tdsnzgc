@@ -19,6 +19,7 @@
 
 <script>
 import { clearCachePage,  } from '@/libs/cachePage';
+import { confirmTips } from "@/decorator";
 
 export default {
   name: 'c-header',
@@ -26,23 +27,16 @@ export default {
     
   },
   methods: {
+    @confirmTips('确定注销?')
     outLogin() {
-      this.$confirm('确定注销?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '已注销!'
-          });
-          
-          this.$store.commit('setMenuList', [])
-          localStorage.clear();
-          location.href = '/login';
-          // clearCachePage();
-          
-        })
+      this.$message({
+        type: 'success',
+        message: '已注销!'
+      });
+      
+      this.$store.commit('setMenuList', [])
+      localStorage.clear();
+      location.href = '/login';
     }
   }
 }

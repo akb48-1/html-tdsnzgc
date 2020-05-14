@@ -2,12 +2,16 @@
     <el-tabs :value="showIndex" type="card" @tab-remove="removeTab" @tab-click="toPath" style="height: 100%;overflow-y: auto;">
       <el-tab-pane
         v-for="(item, index) in editableTabs"
-        :key="item.path"
+        :key="item.fullPath"
         :label="item.meta.title"
-        :name="item.path"
-        :closable="![homePage.path, $route.path].includes(item.path)"
+        :name="JSON.stringify({
+          path:item.path, 
+          name:item.name, 
+          query: item.query, 
+          params: item.params
+        })"
+        :closable="![homePage.path, $route.fullPath].includes(item.fullPath)"
       > 
-      <p></p>
         <component :is="item.path.replace('/', '').replace(/\//g, '-')"></component>
       </el-tab-pane>
     </el-tabs>
@@ -27,15 +31,15 @@ export default {
   },
   methods: {
     removeTab(path) {
-      removeCachePage([path])
+      removeCachePage([JSON.parse(path).path])
     },
     toPath(path) {
-      this.$router.push(path.paneName)
+      this.$router.push(JSON.parse(path.paneName))
     }
   },
   computed: {
     showIndex() {
-      return this.$route.path;
+      return JSON.stringify({path:this.$route.path, name:this.$route.name, query: this.$route.query, params: this.$route.params})
     }
   }
 };

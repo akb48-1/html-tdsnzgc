@@ -8,7 +8,7 @@ const instance = axios.create({
     'Content-Type': 'application/json;charset=UTF-8'
   },
   baseURL: '/api',
-  timeout: 10000,
+  timeout: 20000,
   withCredentials: true,
 })
 
@@ -43,10 +43,14 @@ instance.interceptors.response.use(response => {
         }, 500);
         return Promise.reject();
       }
+    } else {
+      return Promise.resolve(response.data);
     }
   }
-  return Promise.resolve(response.data);
+  return Promise.reject({ error: '错误' })
+  // return Promise.resolve(response.data);
 }, error => {
+    message.error(error.message);
   return Promise.reject({error: '错误'}); // 返回接口返回的错误信息
 })
 

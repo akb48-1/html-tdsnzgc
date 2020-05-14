@@ -2,7 +2,7 @@
   <page id="role-setting">
     <el-form :inline="true" :model="searchForm">
       <el-form-item label="角色ID：">
-        <el-input v-model.number="searchForm.role_id" placeholder="角色ID" class="w140"></el-input>
+        <el-input v-model="searchForm.role_id" placeholder="角色ID" class="w140"></el-input>
       </el-form-item>
       <el-form-item label="角色名称：">
         <el-input v-model="searchForm.role_name" placeholder="角色名称" class="w140"></el-input>
@@ -66,6 +66,7 @@
 <script>
 import roleList from './role-list.vue';
 import { addRole, updateRole } from '@/http';
+import { confirmTips, validate } from "@/decorator";
 
 const ADD = 'add';
 const EDIT = 'edit'
@@ -182,29 +183,13 @@ export default {
         reject()
       })
     },
-    confirmBtnEvent() {
-      return new Promise((resolve, reject) => {
-        this.$refs.dialogForm.validate(valid => {
-          if (valid) {
-            this.submitAddRole({
-              role_name: this.dialogForm.role_name
-            }, resolve, reject);
-          } else {
-            reject()
-          }
-        })
-      })
+    @validate('dialogForm')
+    confirmBtnEvent(...args) {
+      this.submitAddRole({role_name: this.dialogForm.role_name}, ...args);
     },
-    modifyBtnEvent() {
-      return new Promise((resolve, reject) => {
-        this.$refs.dialogForm.validate(valid => {
-          if (valid) {
-            this.submitUpdateRole({...this.dialogForm}, resolve, reject);
-          } else {
-            reject()
-          }
-        })
-      })
+    @validate('dialogForm')
+    modifyBtnEvent(...args) {
+      this.submitUpdateRole({...this.dialogForm}, ...args);
     }
   },
   created() {

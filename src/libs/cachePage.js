@@ -14,7 +14,17 @@ export function removeCachePage(pathList) {
     // const newCachePage = cachePage.filter(page => !pathList.includes(page.path) || page.path == config.homePage.path);
     pathList.forEach(path => {
         cachePage.forEach((page, index) => {
-            if(page.path === path) cachePage.splice(index, 1)
+            if (page.path === path) cachePage.splice(index, 1)
         });
     });
+}
+
+export function updateTitle(title, path) {
+    var index = cachePage.indexOf(currentPage);
+
+    var currentPage = cachePage.find(item => item.path === path);
+    
+    currentPage.meta.title = title;
+    
+    cachePage.splice(index, 1, currentPage)
 }

@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div class="page">
     <el-table :data="tableData" border style="width: 100%" v-loading="loading">
-      <el-table-column label="序号" type="index" ></el-table-column>
-      <!-- <el-table-column prop="index" label="序号" width="60" class="hidden"></el-table-column> -->
+      <el-table-column label="序号" width="70" >
+        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+      </el-table-column>
       <el-table-column prop="role_name" label="角色名称" width="180"></el-table-column>
       <el-table-column prop="create_time" label="创建时间"></el-table-column>
       <el-table-column prop="createer_name" label="创建人"></el-table-column>
@@ -29,6 +30,7 @@
 
 <script>
 import { queryRoleByPage, deleteRole } from '@/http'
+import { confirmWinGen } from "@/decorator"
 
 export default {
     props: {
@@ -56,28 +58,16 @@ export default {
       this.$emit('update:handlerType', 'edit')
       this.$emit('update:dialogForm', {...item})
     },
+
+    @confirmWinGen()
     removeInfo(item) {
-      this.$confirm(`确认删除【${item.role_name}】？`, '提示', {
-        type: 'warning',
-        loading: false,
-        beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              deleteRole(item.role_id).then(res => {
-                
-                if(res.success) {
-                  this.$message.success('删除成功');
-                  done();
-                  this.queryRoleByPage()
-                }
-              }).finally(() => {
-                instance.confirmButtonLoading = false;
-              })
-            } else {
-              done();
-            }
-          },
-        })
+      return deleteRole(item.role_id).then(res => {
+        if(res.success) {
+          this.$message.success('删除成功');
+          this.queryRoleByPage()
+          Promise.resolve()
+        }
+      })
     },
     handleCurrentChange(pageNo) {
       this.queryRoleByPage()

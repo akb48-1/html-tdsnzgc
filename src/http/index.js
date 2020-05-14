@@ -36,7 +36,7 @@ export function queryAllPermissionMenu() {
   });
 }
 
-// 获取角色
+// 角色分页
 export function queryRoleByPage(params = {}) {
   return axios({
     method: 'post',
@@ -113,3 +113,148 @@ export function addPermissionByRoleId(role_id, permission_id) {
   });
 }
 
+
+// 机构分页
+export function queryOrganByPage(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/organ/queryByPage',
+    data: params
+  });
+}
+
+// 机构详情
+export function queryOrganById(organ_id) {
+  return axios({
+    method: 'post',
+    url: `/organ/queryById/${organ_id}`
+  });
+}
+
+// 添加机构
+export function addOrgan(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/organ/addOrgan',
+    data: params
+  });
+}
+
+
+// 修改机构
+export function updateOrgan(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/organ/updateOrgan',
+    data: params
+  });
+}
+
+// 我的机构信息
+export function queryMyOrgan() {
+  return axios({
+    method: 'post',
+    url: '/organ/queryMyOrgan',
+  });
+}
+
+
+// 所有单位信息
+export function queryAllUnit() {
+  return axios({
+    method: 'post',
+    url: '/unit/queryAll',
+  });
+}
+
+// 单位分页
+export function queryUnitByPage(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/unit/queryByPage',
+    data: params
+  });
+}
+
+// 新增单位
+export function addUnit(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/unit/addUnit',
+    data: params
+  });
+}
+
+
+// 所有分类信息
+export function queryAllClassify() {
+  return axios({
+    method: 'post',
+    url: '/classify/queryAll',
+  });
+}
+
+// 单位分页
+export function queryClassifyByPage(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/classify/queryByPage',
+    data: params
+  });
+}
+
+// 新增分类
+export function addClassify(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/classify/addClassify',
+    data: params
+  });
+}
+
+// 修改分类
+export function updateClassify(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/classify/updateClassify',
+    data: params
+  });
+}
+
+
+
+// 查商品详情
+export function queryGoods(goods_id) {
+  return axios({
+    method: 'post',
+    url: `/goods/queryById/${goods_id}`
+  });
+}
+
+// 角色分页
+export function queryGoodsByPage(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/goods/queryByPage',
+    data: params
+  });
+}
+
+// 新增商品
+export function addGoods(params = {}) {
+  return axios({
+    method: 'post',
+    url: '/goods/addGoods',
+    data: params
+  });
+}
+
+
+// 更新商品详情
+export function updateGoods(params) {
+  return axios({
+    method: 'post',
+    url: '/goods/updateGoods',
+    data: params
+  });
+}
