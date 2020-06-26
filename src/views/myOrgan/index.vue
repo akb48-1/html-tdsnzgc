@@ -6,11 +6,14 @@
             <el-upload
               :disabled="!(handlerType === EDIT)"
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="/api/file/uploadImg"
+              name="file"
+              :headers="headers"
+              :data="{type: 'organ'}"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload">
-              <img v-if="organForm.organ_picture" :src="organForm.organ_picture" class="avatar">
+              <img v-if="organForm.organ_picture" :src="baseURL + organForm.organ_picture" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </div>
@@ -64,12 +67,17 @@
 <script>
 const EDIT = 'edit';
 import { queryMyOrgan, updateOrgan } from '@/http';
+import { baseURL } from '@/http/axios';
 import { confirmTips, validate } from "@/decorator";
 
 
 export default {
   data() {
     return {
+      headers: {
+        token: localStorage.getItem('token')
+      },
+      baseURL: baseURL,
       handlerType: '',
       EDIT: EDIT,
       imageUrl: '',
@@ -112,8 +120,11 @@ export default {
       })
     },
     handleAvatarSuccess(res, file) {
-      console.log(res, file)
-      this.organForm.organ_picture = URL.createObjectURL(file.raw);
+      if(!res.success) {
+        this.$message.error(res.message)
+      } else {
+        this.organForm.organ_picture = res.data.url
+      }
     },
     beforeAvatarUpload(file) {
       console.log( file)
@@ -121,10 +132,12 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!');
+        this.$message.error('上传图片只能是 JPG 格式!');
+        return false;
       }
       if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!');
+        this.$message.error('上传图片大小不能超过 2MB!');
+        return false;
       }
       return isJPG && isLt2M;
     },
@@ -190,6 +203,6 @@ export default {
     width: 100%;
     display: block;
   }
-  }
+}
 
 </style>

@@ -1,5 +1,5 @@
 import axios from '@/http/axios';
-
+import { deepClone } from '@/util';
 /*
     作用：提前加载资源
     参数：key => 组件内使用的数据 this[key]。
@@ -27,20 +27,21 @@ export function loadData(arr = []) {
                 method: item.method || 'post',
                 url: item.url,
             }).then(res => {
-                newData[item.key].push(...res.data)            
+                newData[item.key].push(...res.data)
             })
         }
     })
 
-    return function (target, key, descriptor) {
+    return function(target, key, descriptor) {
         /* 重点 不可变更 */
         var oldData = descriptor.value()
-        descriptor.value = function () {
-            return Object.assign(JSON.parse(JSON.stringify(oldData)), newData)
+        descriptor.value = function() {
+            return Object.assign(deepClone(oldData), newData)
+                // return Object.assign(JSON.parse(JSON.stringify(oldData)), newData)
         }
         return descriptor;
     }
-    
+
 }
 
 
@@ -56,18 +57,18 @@ export function loadData(arr = []) {
     }
  */
 export function confirmTips(msg = '确定执行此操作？', type = 'warning') {
-    
-    return function (target, key, descriptor) {
+
+    return function(target, key, descriptor) {
 
         let orignEvent = descriptor.value;
 
-        descriptor.value = function (...args) {
+        descriptor.value = function(...args) {
 
             this.$confirm(msg, '提示', {
-                type: type
-            })
-            .then(orignEvent.bind(this, ...args))
-            .catch((err) => {})
+                    type: type
+                })
+                .then(orignEvent.bind(this, ...args))
+                .catch((err) => {})
         }
 
         return descriptor;
@@ -76,11 +77,11 @@ export function confirmTips(msg = '确定执行此操作？', type = 'warning') 
 
 export function confirmWinGen(msg = '确定执行此操作？', type = 'warning') {
 
-    return function (target, key, descriptor) {
+    return function(target, key, descriptor) {
 
         let orignEvent = descriptor.value;
 
-        descriptor.value = function (...args) {
+        descriptor.value = function(...args) {
 
             this.$confirm(msg, '提示', {
                 type: type,
@@ -117,11 +118,11 @@ export function confirmWinGen(msg = '确定执行此操作？', type = 'warning'
  */
 export function validate(formRef) {
 
-    return function (target, key, descriptor) {
+    return function(target, key, descriptor) {
 
         let orignEvent = descriptor.value;
-    
-        descriptor.value = function (...args) {
+
+        descriptor.value = function(...args) {
             return new Promise((resolve, reject) => {
                 this.$refs[formRef].validate(valid => {
                     if (valid) {
@@ -131,7 +132,7 @@ export function validate(formRef) {
                     }
                 })
             })
-            
+
         }
 
         return descriptor;

@@ -50,7 +50,7 @@
 
     <new-dialog
        v-model="dialogVisible" 
-       :title="handlerType === 'edit'? '修改' : '添加' + '分店'" 
+       :title="handlerType === EDIT? '修改' : '添加' + '分店'" 
        :confirm="confirmBtnEvent" 
        :modify="modifyBtnEvent" 
        :handlerType="handlerType"
@@ -78,12 +78,25 @@
             <el-input v-model="dialogForm.organ_desc" placeholder="描述" class="w140"></el-input>
           </el-form-item>
           <el-form-item label="分店图片：" prop="organ_picture">
+            <el-upload
+              class="avatar-uploader"
+              action="/api/file/uploadImg"
+              name="file"
+              :headers="headers"
+              :data="{type: 'organ'}"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="dialogForm.organ_picture" :src="baseURL + dialogForm.organ_picture" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+
             <el-input v-model="dialogForm.organ_picture" placeholder="分店图片" class="w140"></el-input>
           </el-form-item>
           <el-form-item label="分店电话：" prop="organ_tel">
             <el-input v-model="dialogForm.organ_tel" placeholder="分店电话" class="w140"></el-input>
           </el-form-item>
-          <el-form-item label="状态：" prop="status" v-if="handlerType === 'edit'">
+          <el-form-item label="状态：" prop="status" v-if="handlerType === EDIT">
             <el-select v-model.number="dialogForm.status" placeholder="权限类型" class="w140">
                 <el-option :label="item.label" :value="item.value" :key="`item.value-${index}`" v-for="(item, index) in statusList" ></el-option>
             </el-select>
@@ -96,6 +109,7 @@
 <script>
 import { queryOrganByPage, addOrgan, updateOrgan } from '@/http'
 import { confirmTips, validate } from "@/decorator";
+import { baseURL } from "@/http/axios";
 
 const ADD = 'add';
 const EDIT = 'edit';
@@ -114,6 +128,11 @@ export default {
   
   data() {
     return {
+      EDIT: EDIT,
+      headers: {
+        token: localStorage.getItem('token')
+      },
+      baseURL: baseURL,
       searchForm: {
         organ_id: "",
         organ_name: ""
@@ -140,13 +159,35 @@ export default {
     };
   },
   methods: {
+    handleAvatarSuccess(res, file) {
+      if(!res.success) {
+        this.$message.error(res.message)
+      } else {
+        this.dialogForm.organ_picture = res.data.url
+      }
+    },
+    beforeAvatarUpload(file) {
+      console.log(file);
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传图片只能是 JPG 格式!");
+        return false;
+      }
+      if (!isLt2M) {
+        this.$message.error("上传图片大小不能超过 2MB!");
+        return false;
+      }
+      return isJPG && isLt2M;
+    },
     viewDetail(item) {
         console.log(item)
     },
     editInfo(item) {
 
       this.dialogVisible = true;
-      this.handlerType = 'edit';
+      this.handlerType = this.EDIT;
       this.dialogForm = {...item};
     },
     openAddOrganDialog() {
@@ -236,10 +277,16 @@ export default {
 
       setTimeout(() => {
           this.init();
-      }, 100)
+      }, 500)
   }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.avatar {
+    // width: 178px;
+    // height: 178px;
+    width: 100%;
+    display: block;
+  }
 </style>

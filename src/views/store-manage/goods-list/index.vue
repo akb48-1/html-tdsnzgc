@@ -195,7 +195,7 @@ export default {
 
       setTimeout(() => {
           this.init();
-      }, 100)
+      }, 500)
   }
 };
 </script>

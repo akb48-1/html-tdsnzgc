@@ -2,12 +2,12 @@ import axios from 'axios';
 import { Message as message } from 'element-ui';
 import qs from 'qs';
 
-
+export const baseURL = process.env.NODE_ENV === 'development' ? '/api' : '';
 const instance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   },
-  baseURL: '/api',
+  baseURL,
   timeout: 20000,
   withCredentials: true,
 })
