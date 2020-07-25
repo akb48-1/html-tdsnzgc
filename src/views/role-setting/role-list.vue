@@ -2,7 +2,7 @@
   <div class="page">
     <el-table :data="tableData" border style="width: 100%" v-loading="loading">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="role_name" label="角色名称" width="180"></el-table-column>
       <el-table-column prop="create_time" label="创建时间"></el-table-column>
@@ -30,7 +30,7 @@
 
 <script>
 import { queryRoleByPage, deleteRole } from '@/http'
-import { confirmWinGen } from "@/decorator"
+import { confirmAsyncTips } from "@/decorator"
 
 export default {
     props: {
@@ -59,7 +59,7 @@ export default {
       this.$emit('update:dialogForm', {...item})
     },
 
-    @confirmWinGen()
+    @confirmAsyncTips()
     removeInfo(item) {
       return deleteRole(item.role_id).then(res => {
         if(res.success) {

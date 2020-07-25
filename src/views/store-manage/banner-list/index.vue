@@ -25,7 +25,7 @@
 
     <el-table :data="tableData" border style="width: 100%" v-loading="loading" class="mt10">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="banner_id" label="轮播图ID" width="100"></el-table-column>
       <el-table-column label="轮播图" width="180">
@@ -67,7 +67,7 @@
 
 <script>
 import { queryBannerByPage, deleteBanner } from '@/http'
-import { loadData, confirmWinGen } from "@/decorator";
+import { loadData, confirmAsyncTips } from "@/decorator";
 import { baseURL } from "@/http/axios";
 
 export default {
@@ -141,7 +141,7 @@ export default {
       })
 
     },
-    @confirmWinGen()
+    @confirmAsyncTips()
     deleteInfo(item) {
       return deleteBanner(item.banner_id).then(res => {
         this.$message.success(res.message)

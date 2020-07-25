@@ -75,7 +75,7 @@ export function confirmTips(msg = '确定执行此操作？', type = 'warning') 
     }
 }
 
-export function confirmWinGen(msg = '确定执行此操作？', type = 'warning') {
+export function confirmAsyncTips(msg = '确定执行此操作？', type = 'warning') {
 
     return function(target, key, descriptor) {
 
