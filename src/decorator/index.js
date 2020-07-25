@@ -138,3 +138,77 @@ export function validate(formRef) {
         return descriptor;
     }
 }
+
+/*
+    作用：函数防抖
+    参数：delay => 减少执行频率（只执行最后一次）。
+    使用展示:
+    @debounce(1000)
+    inputHandle(value) {
+      console.log(value)
+    }
+ */
+export function debounce(delay = 500) {
+
+    return function(target, key, descriptor) {
+
+        let orignEvent = descriptor.value;
+
+        let timer = null;
+
+        descriptor.value = function(...args) {
+
+            if (timer) {
+
+                clearTimeout(timer)
+
+            }
+
+            timer = setTimeout(orignEvent.bind(this, ...args), delay);
+
+        }
+
+        return descriptor;
+    }
+}
+
+
+/*
+    作用：函数节流
+    参数：delay => 减少执行频率（一段时间内只执行一次）。
+    使用展示:
+    @throttle(1000)
+    inputHandle(value) {
+      console.log(value)
+    }
+ */
+export function throttle(delay = 500) {
+
+    let running = false;
+
+    return function(target, key, descriptor) {
+
+        let orignEvent = descriptor.value;
+
+        descriptor.value = function(...args) {
+
+            if (running) {
+
+                return;
+
+            }
+
+            running = true;
+
+            setTimeout(() => {
+
+                orignEvent.call(this, ...args)
+
+                running = false;
+
+            }, delay);
+        }
+
+        return descriptor;
+    }
+}
