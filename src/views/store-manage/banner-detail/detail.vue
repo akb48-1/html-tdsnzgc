@@ -230,7 +230,7 @@ export default {
         }).then(() => {
           return file;
         }, () => {
-          this.$message.error(`图片尺寸限制为${width}（宽） x ${height}（高）`)
+          this.$message.error(`图片尺寸限制为${this.imgWidth}（宽） x ${this.imgHeight}（高）`)
           return Promise.reject();
         });
 

@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <el-form :inline="true" :model="searchForm" ref="qaqa" :rules="dialogFormRules">
+    <el-form :inline="true" :model="searchForm" ref="searchForm" :rules="dialogFormRules">
       <el-form-item label="单位ID：" prop="unit_id">
         <el-input v-model="searchForm.unit_id" placeholder="单位ID" class="w140"></el-input>
       </el-form-item>
@@ -18,7 +18,7 @@
 
     <el-table :data="tableData" border style="width: 100%" v-loading="loading" class="mt10">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="unit_id" label="单位id" width="180"></el-table-column>
       <el-table-column prop="unit_name" label="单位名称" width="180"></el-table-column>
@@ -84,9 +84,9 @@ export default {
       handlerType: '',
 
       dialogFormRules: {
-        unit_name: [{ required: true, message: "请输入单位名称", trigger: "change" }],
-        unit_key: [{ required: true, message: "请输入单位KEY", trigger: "change" }],
-        unit_id: [{ required: true, message: "请输入单位id", trigger: "change" }],
+        unit_name: [{ required: false, message: "请输入单位名称", trigger: "change" }],
+        unit_key: [{ required: false, message: "请输入单位KEY", trigger: "change" }],
+        unit_id: [{ required: false, message: "请输入单位id", trigger: "change" }],
       }
     };
   },
@@ -103,6 +103,7 @@ export default {
       this.queryUnitByPage()
     },
 
+    @validate('searchForm')
     formSearch(params = {}) {
       this.searchFormData = this.searchForm;
 

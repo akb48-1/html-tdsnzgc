@@ -21,7 +21,7 @@
 
     <el-table :data="tableData" border style="width: 100%" v-loading="loading" class="mt10">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="classify_id" label="分类id" ></el-table-column>
       <el-table-column prop="classify_name" label="分类名称" ></el-table-column>

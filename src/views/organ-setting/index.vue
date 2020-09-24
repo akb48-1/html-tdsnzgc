@@ -18,7 +18,7 @@
 
     <el-table :data="tableData" border style="width: 100%" v-loading="loading" class="mt10">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="organ_name" label="分店名称" width="180"></el-table-column>
       <el-table-column prop="organ_tel" label="分店电话" width="180"></el-table-column>

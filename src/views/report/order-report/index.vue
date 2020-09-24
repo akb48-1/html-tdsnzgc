@@ -78,7 +78,7 @@
 
     <el-table :data="tableData" border style="width: 100%" v-loading="loading" class="mt10">
       <el-table-column label="序号" width="70" >
-        <template scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
+        <template slot-scope="scope"><span>{{scope.$index+($refs.pagination.pageNo - 1) * $refs.pagination.pageSize + 1}} </span></template>
       </el-table-column>
       <el-table-column prop="order_price" label="订单总额" width="100"></el-table-column>
       <el-table-column prop="real_price" label="应付金额" width="180"></el-table-column>
