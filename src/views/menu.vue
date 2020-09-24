@@ -16,12 +16,14 @@
             <template slot="title">
               <i :class="menu.icon"></i>
               <span slot="title">{{menu.title}}</span>
+            </template >
+            <template v-for="(child) in menu.children" >
+              <el-menu-item :index="child.route_url || ''" :key="child.route_url" v-if="child.show_menu">{{child.title}}</el-menu-item>
             </template>
-              <el-menu-item :index="child.route_url || ''" v-for="(child) in menu.children" :key="child.route_url">{{child.title}}</el-menu-item>
           </el-submenu>
         </div>
         <div v-else>
-          <el-menu-item :index="menu.route_url || ''" >
+          <el-menu-item :index="menu.route_url || ''" v-if="menu.show_menu">
             <i :class="menu.icon"></i>
             <span slot="title">{{menu.title}}</span>
           </el-menu-item>
