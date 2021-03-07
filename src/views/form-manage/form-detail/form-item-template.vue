@@ -86,7 +86,6 @@
 export default {
   name: "form-item-template",
   components: {
-    "form-item-template": () => import("./form-item-template.vue"),
   },
   props: {
     cItem: {
